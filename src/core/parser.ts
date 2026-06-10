@@ -52,6 +52,7 @@ const parseProcessor = (str: string) => {
 };
 
 const makeFilePath = (path: string) => (path.endsWith(".xlsx") ? path : path + ".xlsx");
+const normalizeToken = (value: string) => value.trim();
 
 export const parseChecker = (
     rowFile: string,
@@ -130,7 +131,13 @@ export const parseChecker = (
                     force,
                     source: s,
                     location,
-                    args: [rowFile, rowSheet, rowKey, rowFilter, makeFilePath(colFile || rowFile)],
+                    args: [
+                        rowFile,
+                        rowSheet,
+                        normalizeToken(rowKey),
+                        normalizeToken(rowFilter),
+                        makeFilePath(normalizeToken(colFile) || rowFile),
+                    ],
                     oneof: [],
                     refers: {},
                     exec: null!,
@@ -156,12 +163,12 @@ export const parseChecker = (
                     args: [
                         rowFile,
                         rowSheet,
-                        rowKey,
-                        rowFilter,
-                        makeFilePath(colFile || rowFile),
-                        colSheet,
-                        colKey,
-                        colFilter,
+                        normalizeToken(rowKey),
+                        normalizeToken(rowFilter),
+                        makeFilePath(normalizeToken(colFile) || rowFile),
+                        normalizeToken(colSheet),
+                        normalizeToken(colKey),
+                        normalizeToken(colFilter),
                     ],
                     oneof: [],
                     refers: {},
@@ -364,12 +371,14 @@ export const loadBody = (path: string, data: xlsx.Workbook) => {
                     cell.v = r - start;
                 }
                 row[field.name] = cell;
+
+                if (field.name.startsWith("-")) {
+                    ignoreField(row, field.name, true);
+                    field.ignore = true;
+                }
+
                 if (field.index === 0) {
                     sheet.data[r] = row;
-                    if (field.name.startsWith("-")) {
-                        ignoreField(row, field.name, true);
-                        field.ignore = true;
-                    }
                 } else if (field.typename.startsWith("@")) {
                     const typename = field.typename.slice(1);
                     const refField = sheet.fields.find((f) => f.name === typename);

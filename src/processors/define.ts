@@ -74,7 +74,30 @@ export const resolveDefineType = <T>(
     typeKey: string = "key1",
     fieldKey: string = "key2"
 ) => {
+    const pending = resolveDefineTypeLazy<T>(
+        workbook,
+        path,
+        sheetName,
+        typeValue,
+        typeKey,
+        fieldKey
+    );
     const types: Record<string, T> = {};
+    for (const [key, resolve] of Object.entries(pending)) {
+        types[key] = resolve();
+    }
+    return types;
+};
+
+export const resolveDefineTypeLazy = <T>(
+    workbook: Workbook,
+    path: string,
+    sheetName: string,
+    typeValue: string,
+    typeKey: string = "key1",
+    fieldKey: string = "key2"
+) => {
+    const types: Record<string, () => T> = {};
     const indexer = new RowIndexer<TRow>(workbook.context, path, sheetName);
     for (const row of indexer.rows) {
         const key1 = row[typeKey];
@@ -82,7 +105,7 @@ export const resolveDefineType = <T>(
         const value = row["value"];
         const type = row["value_type"];
         if (key1.v === typeValue) {
-            types[String(key2.v)] = convertValue(value, type.v as string).v as T;
+            types[String(key2.v)] = () => convertValue(value, type.v as string).v as T;
         }
     }
     return types;

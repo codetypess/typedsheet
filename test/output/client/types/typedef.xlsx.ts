@@ -7,30 +7,30 @@ import {
 
 export interface GeneratedTypedefCoinRow {
     /**
-     * ### (location: A1) (checker: x)
+     * ### (type: int) (location: A1) (checker: x)
      */
     readonly id: number;
     /**
-     * 条件 (location: C1) (checker: x)
+     * 条件 (type: string) (location: C1) (checker: x)
      */
     readonly condition: string;
 }
 
 export interface GeneratedTypedefMainRow {
     /**
-     * ### (location: A1) (checker: x)
+     * ### (type: int) (location: A1) (checker: x)
      */
     readonly id: number;
     /**
-     * 条件 (location: C1) (checker: x)
+     * 条件 (type: string) (location: C1) (checker: x)
      */
     readonly condition: string;
     /**
-     * 参数 (location: D1) (checker: x)
+     * 参数 (type: TaskArgs) (location: D1) (checker: x)
      */
     readonly args: TaskArgs;
     /**
-     * 数据 (location: E1) (checker: x)
+     * 数据 (type: [float, int][]?) (location: E1) (checker: x)
      */
     readonly data?: readonly [number, number][];
 }

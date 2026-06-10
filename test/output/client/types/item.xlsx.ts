@@ -11,154 +11,154 @@ type ItemArgs = Record<string, number> | number[][];
 
 export interface GeneratedItemFollowRow {
     /**
-     * ### (location: A1) (checker: x)
+     * ### (type: int) (location: A1) (checker: x)
      */
     readonly id: number;
     /**
-     * 物品类型 (location: B1) (checker: x)
+     * 物品类型 (type: string?) (location: B1) (checker: x)
      */
     readonly name?: string;
     /**
-     *  (location: C1) (checker: @follow(name))
+     *  (type: string?) (location: C1) (checker: @follow(name))
      */
     readonly value?: string;
     /**
-     *  (location: D1) (checker: x)
+     *  (type: int[]?) (location: D1) (checker: x)
      */
     readonly arr1?: readonly number[];
     /**
-     *  (location: E1) (checker: $.length == arr1.length)
+     *  (type: int[]?) (location: E1) (checker: $.length == arr1.length)
      */
     readonly arr2?: readonly number[];
 }
 
 export interface GeneratedItemItemRow {
     /**
-     * ### (location: A1) (checker: x)
+     * ### (type: int) (location: A1) (checker: x)
      */
     readonly id: number;
     /**
-     * 注释 (location: B1) (checker: x)
+     * 注释 (type: string) (location: B1) (checker: x)
      */
     readonly comment: string;
     /**
-     * 物品名称 (location: C1) (checker: x)
+     * 物品名称 (type: string) (location: C1) (checker: x)
      */
     readonly name: string;
     /**
-     * 物品说明 (location: D1) (checker: x)
+     * 物品说明 (type: string) (location: D1) (checker: x)
      */
     readonly desc: string;
     /**
-     * 物品类型 config.ITEM_TYPE (location: E1) (checker: x)
+     * 物品类型 config.ITEM_TYPE (type: ItemType) (location: E1) (checker: x)
      */
     readonly item_type: ItemType;
     /**
-     * 背包类型 config.BAG_TYPE (location: F1) (checker: x)
+     * 背包类型 config.BAG_TYPE (type: BagType) (location: F1) (checker: x)
      */
     readonly bag_id: BagType;
     /**
-     * 可否堆叠 (location: G1) (checker: x)
+     * 可否堆叠 (type: int?) (location: G1) (checker: x)
      */
     readonly stack?: number;
     /**
-     * 品质(颜色) (location: H1) (checker: x)
+     * 品质(颜色) (type: QualityType) (location: H1) (checker: x)
      */
     readonly quality: QualityType;
     /**
-     * 参数 (location: I1) (checker: x)
+     * 参数 (type: table?) (location: I1) (checker: x)
      */
     readonly args?: ItemArgs; // override
     /**
-     * 背包是否隐藏 (location: J1) (checker: x)
+     * 背包是否隐藏 (type: bool?) (location: J1) (checker: x)
      */
     readonly hide?: boolean;
 }
 
 export interface GeneratedItemMapRow {
     /**
-     * 注释 (location: B2) (checker: x)
+     * 注释 (type: string) (location: B2) (checker: x)
      */
     readonly comment: string;
     /**
-     *  (location: C2) (checker: x)
+     *  (type: int) (location: C2) (checker: x)
      */
     readonly kind: number;
     /**
-     *  (location: D2) (checker: x)
+     *  (type: int) (location: D2) (checker: x)
      */
     readonly level: number;
     /**
-     * 物品名称 (location: E2) (checker: x)
+     * 物品名称 (type: string) (location: E2) (checker: x)
      */
     readonly name: string;
 }
 
 export interface GeneratedItemMapArrRow {
     /**
-     * ### (location: A2) (checker: x)
+     * ### (type: auto) (location: A2) (checker: x)
      */
     readonly id: number;
     /**
-     * 注释 (location: B2) (checker: x)
+     * 注释 (type: string) (location: B2) (checker: x)
      */
     readonly comment: string;
     /**
-     *  (location: C2) (checker: x)
+     *  (type: int) (location: C2) (checker: x)
      */
     readonly kind: number;
     /**
-     *  (location: D2) (checker: x)
+     *  (type: int) (location: D2) (checker: x)
      */
     readonly level: number;
     /**
-     * 物品名称 (location: E2) (checker: x)
+     * 物品名称 (type: string) (location: E2) (checker: x)
      */
     readonly name: string;
 }
 
 export interface GeneratedItemMapFieldRow {
     /**
-     * ### (location: A2) (checker: x)
+     * ### (type: auto) (location: A2) (checker: x)
      */
     readonly id: number;
     /**
-     * 注释 (location: B2) (checker: x)
+     * 注释 (type: string) (location: B2) (checker: x)
      */
     readonly comment: string;
     /**
-     *  (location: C2) (checker: x)
+     *  (type: int) (location: C2) (checker: x)
      */
     readonly kind: number;
     /**
-     *  (location: D2) (checker: x)
+     *  (type: int) (location: D2) (checker: x)
      */
     readonly level: number;
     /**
-     * 物品名称 (location: E2) (checker: x)
+     * 物品名称 (type: string) (location: E2) (checker: x)
      */
     readonly name: string;
 }
 
 export interface GeneratedItemMapObjRow {
     /**
-     * ### (location: A2) (checker: x)
+     * ### (type: auto) (location: A2) (checker: x)
      */
     readonly id: number;
     /**
-     * 注释 (location: B2) (checker: x)
+     * 注释 (type: string) (location: B2) (checker: x)
      */
     readonly comment: string;
     /**
-     *  (location: C2) (checker: x)
+     *  (type: int) (location: C2) (checker: x)
      */
     readonly kind: number;
     /**
-     *  (location: D2) (checker: x)
+     *  (type: int) (location: D2) (checker: x)
      */
     readonly level: number;
     /**
-     * 物品名称 (location: E2) (checker: x)
+     * 物品名称 (type: string) (location: E2) (checker: x)
      */
     readonly name: string;
 }

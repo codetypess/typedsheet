@@ -11,6 +11,9 @@ import { checkType } from "../core/value";
 import { Workbook } from "../core/workbook";
 import { values } from "../util";
 
+/**
+ * Collapses rows into nested objects based on specified keys. The last key will have an array of rows as its value.
+ */
 export const collapseSheet = (workbook: Workbook, sheet: Sheet, ...keys: string[]) => {
     checkType(sheet.data, Type.Sheet);
     const result: { [key: string]: TValue } = {};

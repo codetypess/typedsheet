@@ -2,6 +2,7 @@ import { Processor } from "../core/contracts";
 import {
     type Sheet,
     type TArray,
+    type TCell,
     type TObject,
     type TRow,
     type TValue,
@@ -10,6 +11,12 @@ import {
 import { checkType } from "../core/value";
 import { Workbook } from "../core/workbook";
 import { values } from "../util";
+
+type Value = TObject &
+    TArray &
+    TCell & {
+        "!location": string;
+    };
 
 export const mapSheet = (workbook: Workbook, sheet: Sheet, value: string, ...keys: string[]) => {
     checkType(sheet.data, Type.Sheet);
@@ -64,6 +71,15 @@ export const mapSheet = (workbook: Workbook, sheet: Sheet, value: string, ...key
                 );
             }
             if (i === keys.length - 1) {
+                const curr = queryValue(row) as Value;
+                curr["!location"] = row[sheet.fields[0].name].r;
+                const last = target[key] as Value;
+                if (last) {
+                    throw new Error(
+                        `${workbook.context.tag} ${workbook.name}.${sheet.name} Duplicate key '${key}', ` +
+                            `last defined at ${last["!location"]}, current at ${curr["!location"]}`
+                    );
+                }
                 target[key] = queryValue(row);
             } else {
                 if (!target[key]) {

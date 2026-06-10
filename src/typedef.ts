@@ -527,7 +527,7 @@ const writeTsRowType = (
         const comment = field.comment.replaceAll(/[\r\n]+/g, " ");
         typeBuffer.writeLine(`/**`);
         typeBuffer.writeLine(
-            ` * ${comment} (location: ${field.location}) (checker: ${checker || "x"})`
+            ` * ${comment} (type: ${field.typename}) (location: ${field.location}) (checker: ${checker || "x"})`
         );
         typeBuffer.writeLine(` */`);
         const resolved = resolveTsType(

@@ -3,7 +3,7 @@ import { trace } from "../core/errors";
 import { converters, registerChecker, registerType } from "../core/registry";
 import { type TRow, type TValue } from "../core/schema";
 import { keys, values } from "../util";
-import { resolveDefineType } from "./define";
+import { resolveDefineTypeLazy } from "./define";
 
 export const AutoRegisterProcessor: Processor = async (workbook) => {
     for (const sheet of workbook.sheets) {
@@ -20,24 +20,35 @@ export const AutoRegisterProcessor: Processor = async (workbook) => {
                 using _ = trace(
                     `Registering type '${enumName}' in '${workbook.path}#${sheet.name}'`
                 );
-                const typeKeys: Record<string, TValue> = resolveDefineType(
+                const pendingValues = resolveDefineTypeLazy<TValue>(
                     workbook,
                     workbook.path,
                     sheet.name,
                     key1
                 );
-                const typeValues: Record<string, string> = keys(typeKeys).reduce(
-                    (acc, key) => {
-                        acc[String(typeKeys[key])] = key;
-                        return acc;
-                    },
-                    {} as Record<string, string>
-                );
+                const resolvedValues: Record<string, TValue> = {};
+                const valueToKey: Record<string, string> = {};
+
+                const resolveValue = (key: string) => {
+                    if (resolvedValues[key] === undefined && pendingValues[key] !== undefined) {
+                        resolvedValues[key] = pendingValues[key]();
+                    }
+                    return resolvedValues[key];
+                };
 
                 if (!converters[enumName]) {
-                    registerType(enumName, (str) => typeKeys[str]);
+                    registerType(enumName, (str) => resolveValue(str));
                     registerChecker(enumName, () => {
-                        return ({ cell }) => typeValues[cell.v as string] !== undefined;
+                        if (Object.keys(valueToKey).length === 0) {
+                            keys(pendingValues).reduce(
+                                (acc, key) => {
+                                    acc[String(resolveValue(key))] = key;
+                                    return acc;
+                                },
+                                valueToKey as Record<string, string>
+                            );
+                        }
+                        return ({ cell }) => valueToKey[cell.v as string] !== undefined;
                     });
                 }
             }
