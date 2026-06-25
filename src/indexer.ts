@@ -179,6 +179,9 @@ export class RowIndexer<T = TRow> {
         cond: string | number | readonly RowFilter[] | ((v: T) => boolean)
     ): T | readonly T[] | null {
         this._init();
+        if (cond === undefined || cond === null) {
+            throw new Error("cond is undefined or null");
+        }
         if (typeof cond === "string" || typeof cond === "number") {
             return this._cache[cond] ?? null;
         } else if (typeof cond === "function") {
